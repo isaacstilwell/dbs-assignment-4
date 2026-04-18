@@ -53,7 +53,7 @@ async function syncScheduled() {
     ])
 
     const in24h = new Date(Date.now() + 24 * 60 * 60 * 1000)
-    const today = todayStart()
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
 
     const tournamentMap = new Map([
       ...[...atpSched.tournaments, ...wtaSched.tournaments].map(t => [t.id, t] as const),
@@ -72,7 +72,8 @@ async function syncScheduled() {
       if (m.status === 'in_progress') return true
       if (!m.start_time) return false
       const t = new Date(m.start_time)
-      if (m.status === 'completed') return t >= today
+      if (m.status === 'completed') return t >= yesterday
+      const today = todayStart()
       return t >= today && t <= in24h
     })
 
