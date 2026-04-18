@@ -1,0 +1,16 @@
+{
+  "name": "tennis-live",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "apps/web/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "start": "turbo start"
+  },
+  "devDependencies": {
+    "turbo": "^2"
+  }
+}

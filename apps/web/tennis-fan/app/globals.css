@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-cream: #F4EFE4;
+  --color-paper: #FDFAF5;
+  --color-ink: #111111;
+  --color-orange: #D4541A;
+  --color-mustard: #E2B040;
+  --color-teal: #2B7A72;
+  --color-mpink: #D63B7A;
+  --color-mblue: #1A5FA8;
+  --font-sans: 'Century Gothic', 'Trebuchet MS', Arial, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+body {
+  background: #F4EFE4;
+  color: #111111;
+  font-family: 'Century Gothic', 'Trebuchet MS', Arial, sans-serif;
+}
