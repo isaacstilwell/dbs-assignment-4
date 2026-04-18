@@ -52,11 +52,14 @@ export interface Match {
   round: string | null
   player1_id: string | null
   player1_name: string
+  player1_nationality: string | null
   player2_id: string | null
   player2_name: string
+  player2_nationality: string | null
   status: MatchStatus
   score: MatchScore | null
   winner_id: string | null
+  walkover: boolean
   start_time: string | null
   tour: Tour
   updated_at: string

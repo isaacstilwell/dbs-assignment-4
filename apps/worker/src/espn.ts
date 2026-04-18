@@ -131,7 +131,18 @@ function normalizeEspnData(
 
         const statusName = competition.status?.type?.name ?? ''
         const completed = competition.status?.type?.completed ?? false
-        const winner = competition.competitors?.find(c => c.winner)
+        const matchStatus = parseMatchStatus(statusName, completed)
+        const score = parseScore(competition)
+
+        const winnerComp = competition.competitors?.find(c => c.winner)
+        // athlete.id is preferred; fall back to competitor.id (same value for singles)
+        const rawWinnerId = winnerComp?.athlete?.id ?? winnerComp?.id ?? null
+        // Only accept if it matches one of the two known player IDs
+        const winner_id = rawWinnerId === p1.id ? p1.id
+          : rawWinnerId === p2.id ? p2.id
+          : null
+
+        const walkover = matchStatus === 'completed' && score === null
 
         matches.push({
           id: competition.id,
@@ -140,11 +151,14 @@ function normalizeEspnData(
           round,
           player1_id: p1.id,
           player1_name: p1.name,
+          player1_nationality: p1.nationality,
           player2_id: p2.id,
           player2_name: p2.name,
-          status: parseMatchStatus(statusName, completed),
-          score: parseScore(competition),
-          winner_id: winner?.athlete?.id ?? null,
+          player2_nationality: p2.nationality,
+          status: matchStatus,
+          score,
+          winner_id,
+          walkover,
           start_time: competition.date ?? null,
           tour,
           updated_at: now,
