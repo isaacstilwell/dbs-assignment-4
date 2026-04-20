@@ -55,6 +55,14 @@ export default function FavoritesPage() {
 
   const favoritePlayerIds = favorites.map(f => f.player_id)
 
+  function handleFavoriteToggle(playerId: string, nowFavorited: boolean) {
+    setFavorites(prev =>
+      nowFavorited
+        ? prev.some(f => f.player_id === playerId) ? prev : [...prev, { id: '', user_id: '', player_id: playerId, player_name: playerId, created_at: '' }]
+        : prev.filter(f => f.player_id !== playerId)
+    )
+  }
+
   if (favorites.length === 0) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-6">
@@ -92,6 +100,7 @@ export default function FavoritesPage() {
       <LiveScoresFeed
         initialMatches={matches}
         filterPlayerIds={favoritePlayerIds}
+        onFavoriteToggle={handleFavoriteToggle}
       />
     </div>
   )

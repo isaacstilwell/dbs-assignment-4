@@ -9,6 +9,7 @@ import MatchCard from './MatchCard'
 interface Props {
   initialMatches: Match[]
   filterPlayerIds?: string[]
+  onFavoriteToggle?: (playerId: string, nowFavorited: boolean) => void
 }
 
 type Tab = 'live' | 'upcoming' | 'completed'
@@ -32,7 +33,7 @@ function filterByTab(matches: Match[], tab: Tab): Match[] {
   }
 }
 
-export default function LiveScoresFeed({ initialMatches, filterPlayerIds }: Props) {
+export default function LiveScoresFeed({ initialMatches, filterPlayerIds, onFavoriteToggle: onFavoriteToggleProp }: Props) {
   const { isSignedIn } = useUser()
   const [matches, setMatches] = useState<Match[]>(initialMatches)
   const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set())
@@ -74,6 +75,7 @@ export default function LiveScoresFeed({ initialMatches, filterPlayerIds }: Prop
       else next.delete(playerId)
       return next
     })
+    onFavoriteToggleProp?.(playerId, nowFavorited)
   }
 
   let displayed = filterByTab(matches, tab)
