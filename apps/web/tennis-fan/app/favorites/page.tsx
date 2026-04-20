@@ -55,10 +55,10 @@ export default function FavoritesPage() {
 
   const favoritePlayerIds = favorites.map(f => f.player_id)
 
-  function handleFavoriteToggle(playerId: string, nowFavorited: boolean) {
+  function handleFavoriteToggle(playerId: string, nowFavorited: boolean, playerName?: string) {
     setFavorites(prev =>
       nowFavorited
-        ? prev.some(f => f.player_id === playerId) ? prev : [...prev, { id: '', user_id: '', player_id: playerId, player_name: playerId, created_at: '' }]
+        ? prev.some(f => f.player_id === playerId) ? prev : [...prev, { id: '', user_id: '', player_id: playerId, player_name: playerName ?? playerId, created_at: '' }]
         : prev.filter(f => f.player_id !== playerId)
     )
   }

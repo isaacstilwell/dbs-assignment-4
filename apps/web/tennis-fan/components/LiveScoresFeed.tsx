@@ -9,7 +9,7 @@ import MatchCard from './MatchCard'
 interface Props {
   initialMatches: Match[]
   filterPlayerIds?: string[]
-  onFavoriteToggle?: (playerId: string, nowFavorited: boolean) => void
+  onFavoriteToggle?: (playerId: string, nowFavorited: boolean, playerName?: string) => void
 }
 
 type Tab = 'live' | 'upcoming' | 'completed'
@@ -68,14 +68,14 @@ export default function LiveScoresFeed({ initialMatches, filterPlayerIds, onFavo
     return () => { supabase.removeChannel(channel) }
   }, [])
 
-  function onFavoriteToggle(playerId: string, nowFavorited: boolean) {
+  function onFavoriteToggle(playerId: string, nowFavorited: boolean, playerName?: string) {
     setFavoritedIds(prev => {
       const next = new Set(prev)
       if (nowFavorited) next.add(playerId)
       else next.delete(playerId)
       return next
     })
-    onFavoriteToggleProp?.(playerId, nowFavorited)
+    onFavoriteToggleProp?.(playerId, nowFavorited, playerName)
   }
 
   let displayed = filterByTab(matches, tab)

@@ -7,7 +7,7 @@ import FavoriteButton from './FavoriteButton'
 interface Props {
   match: Match
   favoritedPlayerIds?: Set<string>
-  onFavoriteToggle?: (playerId: string, nowFavorited: boolean) => void
+  onFavoriteToggle?: (playerId: string, nowFavorited: boolean, playerName?: string) => void
 }
 
 const NATIONALITY_TO_ALPHA2: Record<string, string> = {
@@ -76,7 +76,7 @@ interface PlayerRowProps {
   isWinner: boolean
   isServing: boolean
   isFavorited: boolean
-  onFavoriteToggle?: (playerId: string, nowFavorited: boolean) => void
+  onFavoriteToggle?: (playerId: string, nowFavorited: boolean, playerName?: string) => void
   sets: number[]
   isCurrentSet: boolean[]
   isLive: boolean

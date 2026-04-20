@@ -7,7 +7,7 @@ interface Props {
   playerId: string
   playerName: string
   initialFavorited?: boolean
-  onToggle?: (playerId: string, nowFavorited: boolean) => void
+  onToggle?: (playerId: string, nowFavorited: boolean, playerName?: string) => void
 }
 
 export default function FavoriteButton({ playerId, playerName, initialFavorited = false, onToggle }: Props) {
@@ -45,7 +45,7 @@ export default function FavoriteButton({ playerId, playerName, initialFavorited 
         if (!res.ok) { console.error('[favorites] POST failed:', await res.json()); return }
       }
       setFavorited(next)
-      onToggle?.(playerId, next)
+      onToggle?.(playerId, next, playerName)
     })
   }
 
