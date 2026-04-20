@@ -55,11 +55,7 @@ function parseScore(competition: EspnCompetition): MatchScore | null {
 
   const current = isLive
     ? {
-        p1: String(competitors[0]?.score ?? '0'),
-        p2: String(competitors[1]?.score ?? '0'),
-        serving: (
-          situation?.lastPlay?.athletesInvolved?.[0]?.id === competitors[0]?.athlete?.id ? 1 : 2
-        ) as 1 | 2,
+        serving: (competitors[0]?.possession ? 1 : 2) as 1 | 2,
       }
     : undefined
 
@@ -238,13 +234,14 @@ interface EspnCompetition {
   id: string
   date?: string
   status?: { type?: { name: string; completed: boolean } }
-  situation?: { lastPlay?: { athletesInvolved?: { id: string }[] } }
+  situation?: Record<string, unknown>
   competitors?: EspnCompetitor[]
 }
 
 interface EspnCompetitor {
   id: string
   score?: string
+  possession?: boolean
   winner?: boolean
   linescores?: { value: string }[]
   curatedRank?: { current: number }

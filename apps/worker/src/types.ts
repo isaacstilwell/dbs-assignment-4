@@ -10,8 +10,6 @@ export interface SetScore {
 }
 
 export interface CurrentGame {
-  p1: string
-  p2: string
   serving: 1 | 2
 }
 

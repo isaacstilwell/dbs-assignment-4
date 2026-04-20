@@ -78,14 +78,14 @@ interface PlayerRowProps {
   isFavorited: boolean
   onFavoriteToggle?: (playerId: string, nowFavorited: boolean) => void
   sets: number[]
-  currentGame: string | null
+  isCurrentSet: boolean[]
   isLive: boolean
   isWalkover: boolean
   noScore: boolean
   startTime: string | null
 }
 
-function PlayerRow({ id, name, nationality, playerId, isWinner, isServing, isFavorited, onFavoriteToggle, sets, currentGame, isLive, isWalkover, noScore, startTime }: PlayerRowProps) {
+function PlayerRow({ id, name, nationality, playerId, isWinner, isServing, isFavorited, onFavoriteToggle, sets, isCurrentSet, isLive, isWalkover, noScore, startTime }: PlayerRowProps) {
   return (
     <div className="flex items-center gap-2 w-full">
       <PlayerAvatar id={id} name={name} />
@@ -111,11 +111,11 @@ function PlayerRow({ id, name, nationality, playerId, isWinner, isServing, isFav
       ) : (
         <div className="flex items-center gap-1 shrink-0 font-mono font-bold text-sm">
           {sets.map((s, i) => (
-            <span key={i} className={`w-5 text-center ${isWinner ? 'text-orange' : 'text-ink'}`}>{s}</span>
+            <span
+              key={i}
+              className={`w-5 text-center ${(isCurrentSet[i] && isLive) || isWinner ? 'text-orange' : 'text-ink'}`}
+            >{s}</span>
           ))}
-          {currentGame !== null && isLive && (
-            <span className="w-6 text-center text-xs text-orange ml-1">{currentGame}</span>
-          )}
         </div>
       )}
     </div>
@@ -143,6 +143,9 @@ export default function MatchCard({ match, favoritedPlayerIds, onFavoriteToggle 
   const p2Winner = isCompleted && effectiveWinnerId === player2_id
   const p1Fav = favoritedPlayerIds?.has(match.player1_id ?? '') ?? false
   const p2Fav = favoritedPlayerIds?.has(match.player2_id ?? '') ?? false
+  const sets = score?.sets ?? []
+  const currentSetIdx = isLive && sets.length > 0 ? sets.length - 1 : -1
+  const isCurrentSet = sets.map((_, i) => i === currentSetIdx)
 
   return (
     <div className="bg-paper border-2 border-ink shadow-[4px_4px_0_#111111] hover:shadow-[2px_2px_0_#111111] hover:translate-x-0.5 hover:translate-y-0.5 transition-all p-4">
@@ -174,8 +177,8 @@ export default function MatchCard({ match, favoritedPlayerIds, onFavoriteToggle 
           isServing={score?.current?.serving === 1}
           isFavorited={p1Fav}
           onFavoriteToggle={onFavoriteToggle}
-          sets={score?.sets.map(s => s.p1) ?? []}
-          currentGame={score?.current?.p1 ?? null}
+          sets={sets.map(s => s.p1)}
+          isCurrentSet={isCurrentSet}
           isLive={isLive}
           isWalkover={isWalkover}
           noScore={noScore}
@@ -190,8 +193,8 @@ export default function MatchCard({ match, favoritedPlayerIds, onFavoriteToggle 
           isServing={score?.current?.serving === 2}
           isFavorited={p2Fav}
           onFavoriteToggle={onFavoriteToggle}
-          sets={score?.sets.map(s => s.p2) ?? []}
-          currentGame={score?.current?.p2 ?? null}
+          sets={sets.map(s => s.p2)}
+          isCurrentSet={isCurrentSet}
           isLive={isLive}
           isWalkover={isWalkover}
           noScore={noScore}
